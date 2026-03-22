@@ -10,11 +10,11 @@ export default function HomeScreen({ onSelect }: HomeScreenProps) {
             <h1 className="roboto-condensed-bold text-4xl tracking-widest uppercase text-white mb-2">
                 Dead by Daylight
             </h1>
-            <p className="roboto text-gray-500 text-sm tracking-widest uppercase mb-16">
+            <p className="roboto text-gray-500 text-sm tracking-widest uppercase">
                 Loadout Randomizer
             </p>
-            <p className="roboto text-gray-500 text-sm tracking-widest uppercase mb-16">
-                Game Version: 9.5.0
+            <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase mb-16">
+                Game Version: <b className="roboto-condensed-bold">9.5.0</b>
             </p>
 
             <div className="flex gap-6">
