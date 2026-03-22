@@ -13,6 +13,9 @@ export default function HomeScreen({ onSelect }: HomeScreenProps) {
             <p className="roboto text-gray-500 text-sm tracking-widest uppercase mb-16">
                 Loadout Randomizer
             </p>
+            <p className="roboto text-gray-500 text-sm tracking-widest uppercase mb-16">
+                Game Version: 9.5.0
+            </p>
 
             <div className="flex gap-6">
                 {/* Killer card */}
