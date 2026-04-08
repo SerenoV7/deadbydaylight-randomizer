@@ -17,7 +17,7 @@ const CURRENT_VERSION_KEY = 'app_version'
 export default function App() {
     const [view, setView] = useState<View>('home')
     const [randomizerVersion, setRandomizerVersion] = useState<string>('Loading...')
-    const [gameVersion, setGameVersion] = useState<string>('Loading...')
+    //const [gameVersion, setGameVersion] = useState<string>('Loading...')
     const [showUpdatePopup, setShowUpdatePopup] = useState<boolean>(false)
     const [newVersion, setNewVersion] = useState<string>('')
 
@@ -38,21 +38,21 @@ export default function App() {
         }
     }
 
-    const fetchGameVersion = async () => {
-        try {
-            const response = await fetch('https://dbd.tricky.lol/api/patchnotes')
-            const data = await response.json()
-            // Get the last id from the response
-            if (Array.isArray(data) && data.length > 0) {
-                const lastPatchNote = data[data.length - 1]
-                return lastPatchNote.id
-            }
-            return 'Unknown'
-        } catch (error) {
-            console.error('Error fetching game version:', error)
-            return 'Unknown'
-        }
-    }
+    // const fetchGameVersion = async () => {
+    //     try {
+    //         const response = await fetch('https://dbd.tricky.lol/api/patchnotes')
+    //         const data = await response.json()
+    //         // Get the last id from the response
+    //         if (Array.isArray(data) && data.length > 0) {
+    //             const lastPatchNote = data[data.length - 1]
+    //             return lastPatchNote.id
+    //         }
+    //         return 'Unknown'
+    //     } catch (error) {
+    //         console.error('Error fetching game version:', error)
+    //         return 'Unknown'
+    //     }
+    // }
 
     useEffect(() => {
         // Initial version fetch and storage
@@ -65,8 +65,8 @@ export default function App() {
                 setRandomizerVersion('Unknown')
             }
 
-            const gdbVersion = await fetchGameVersion()
-            setGameVersion(gdbVersion)
+            //const gdbVersion = await fetchGameVersion()
+            //setGameVersion(gdbVersion)
         }
 
         initializeVersion()
@@ -111,7 +111,7 @@ export default function App() {
             )}
 
             {view === 'home' && (
-                <HomeScreen onSelect={(role) => setView(role)} randomizerVersion={randomizerVersion} gameVersion={gameVersion} />
+                <HomeScreen onSelect={(role) => setView(role)} randomizerVersion={randomizerVersion} />
             )}
             {view === 'killer' && (
                 <KillerPanel onBack={() => setView('home')} />
