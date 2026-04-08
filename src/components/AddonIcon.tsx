@@ -42,13 +42,13 @@ const AddonIcon: React.FC<AddonIconProps> = ({ name, className }) => {
           setDescription(data[addonKey].description)
         } else {
           console.warn(`Addon "${name}" not found in data, using fallback image path.`)  
-          setImagePath(`/icons/ItemAddons/${name.replace(/\s+/g, '')}.png`)
+          setImagePath(`/icons/ItemAddons/${name.replace(/\s+/g, '')}.webp`)
           setAddonName(name)
         }
       })
       .catch((error) => {
         console.error('Error fetching addon data:', error)
-        setImagePath(`/icons/ItemAddons/${name.replace(/\s+/g, '')}.png`)
+        setImagePath(`/icons/ItemAddons/${name.replace(/\s+/g, '')}.webp`)
         setAddonName(name)
       })
   }, [name])

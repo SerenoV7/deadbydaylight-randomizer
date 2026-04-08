@@ -37,13 +37,13 @@ const PerkIcon: React.FC<PerkIconProps> = ({ name, className }) => {
           setPerkName(data[perkKey].name)
           setDescription(data[perkKey].description)
         } else {
-          setImagePath(`/icons/Perks/${name.replace(/\s+/g, '')}.png`)
+          setImagePath(`/icons/Perks/${name.replace(/\s+/g, '')}.webp`)
           setPerkName(name)
         }
       })
       .catch((error) => {
         console.error('Error fetching perk data:', error)
-        setImagePath(`/icons/Perks/${name.replace(/\s+/g, '')}.png`)
+        setImagePath(`/icons/Perks/${name.replace(/\s+/g, '')}.webp`)
         setPerkName(name)
       })
   }, [name])

@@ -1,10 +1,30 @@
+import { useState, useEffect } from 'react'
+
 type Role = 'killer' | 'survivor'
 
 interface HomeScreenProps {
     onSelect: (role: Role) => void
 }
 
+interface VersionData {
+    version: string
+}
+
 export default function HomeScreen({ onSelect }: HomeScreenProps) {
+    const [randomizerVersion, setRandomizerVersion] = useState<string>('Loading...')
+
+    useEffect(() => {
+        fetch('/version.json')
+            .then((response) => response.json())
+            .then((data: VersionData) => {
+                setRandomizerVersion(data.version)
+            })
+            .catch((error) => {
+                console.error('Error fetching version:', error)
+                setRandomizerVersion('Unknown')
+            })
+    }, [])
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center w-full bg-gray-950">
             <h1 className="roboto-condensed-bold text-4xl tracking-widest uppercase text-white mb-2">
@@ -13,8 +33,11 @@ export default function HomeScreen({ onSelect }: HomeScreenProps) {
             <p className="roboto text-gray-500 text-sm tracking-widest uppercase">
                 Loadout Randomizer
             </p>
-            <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase mb-16">
+            <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase mb-2">
                 Game Version: <b className="roboto-condensed-bold">9.5.0</b>
+            </p>
+            <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase mb-16">
+                Randomizer Version: <b className="roboto-condensed-bold">{randomizerVersion}</b>
             </p>
 
             <div className="flex gap-6">
@@ -28,7 +51,7 @@ export default function HomeScreen({ onSelect }: HomeScreenProps) {
 
                     {/* Icon */}
                     <img
-                        src="/icons/killer.png"
+                        src="/icons/killer.webp"
                         alt="Killer"
                         className="absolute top-8 w-24 h-24 object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
                     />
@@ -59,7 +82,7 @@ export default function HomeScreen({ onSelect }: HomeScreenProps) {
 
                     {/* Icon */}
                     <img
-                        src="/icons/survivor.png"
+                        src="/icons/survivor.webp"
                         alt="Survivor"
                         className="absolute top-8 w-24 h-24 object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
                     />

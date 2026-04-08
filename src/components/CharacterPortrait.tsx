@@ -23,12 +23,12 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ name, className }
         if (characterKey && data[characterKey].image) {
           setImagePath(`${data[characterKey].image}`)
         } else {
-          setImagePath(`/icons/CharPortraits/${name.replace(/\s+/g, '')}_Portrait.png`)
+          setImagePath(`/icons/CharPortraits/${name.replace(/\s+/g, '')}_Portrait.webp`)
         }
       })
       .catch((error) => {
         console.error('Error fetching character data:', error)
-        setImagePath(`/icons/CharPortraits/${name.replace(/\s+/g, '')}_Portrait.png`)
+        setImagePath(`/icons/CharPortraits/${name.replace(/\s+/g, '')}_Portrait.webp`)
       })
   }, [name])
 

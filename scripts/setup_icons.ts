@@ -9,6 +9,7 @@ import https from 'https';
 import fs from 'fs/promises';
 import path from 'path';
 import AdmZip from 'adm-zip';
+import sharp from 'sharp';
 
 const zipUrl = 'https://file.serenodev.com/misc/dbdrando/default-icons.zip';
 const zipPath = './public/icons/default-icons.zip';
@@ -48,6 +49,33 @@ async function removeDir(dirPath: string): Promise<void> {
   }
 }
 
+// Helper function to convert PNG files to WebP
+async function convertToWebP(dirPath: string): Promise<void> {
+  async function convertFilesRecursively(dir: string): Promise<void> {
+    const files = await fs.readdir(dir);
+    for (const file of files) {
+      const filePath = path.join(dir, file);
+      const stat = await fs.stat(filePath);
+      
+      if (stat.isDirectory()) {
+        await convertFilesRecursively(filePath);
+      } else if (stat.isFile() && file.toLowerCase().endsWith('.png')) {
+        try {
+          const webpPath = filePath.replace(/\.png$/i, '.webp');
+          await sharp(filePath)
+            .webp({ quality: 85 })
+            .toFile(webpPath);
+          await fs.unlink(filePath);
+        } catch (error) {
+          console.warn(`Failed to convert ${file} to WebP:`, error);
+        }
+      }
+    }
+  }
+  
+  await convertFilesRecursively(dirPath);
+}
+
 console.clear();
 
 // Create directory if it doesn't exist
@@ -64,6 +92,10 @@ zip.extractAllTo(unpackDir, true);
 
 // Remove the ZIP file
 await fs.unlink(zipPath);
+
+// Convert PNG files to WebP
+console.log('Converting PNG files to WebP...');
+await convertToWebP(unpackDir);
 
 // Remove unwanted directories
 const dirsToRemove = [
@@ -82,10 +114,10 @@ for (const dir of dirsToRemove) {
 }
 
 // Move specific files from HelpLoading
-const survivorSrc = path.join(unpackDir, 'HelpLoading/T_UI_iconHelpLoading_survivor.png');
-const survivorDest = path.join(unpackDir, 'survivor.png');
-const killerSrc = path.join(unpackDir, 'HelpLoading/T_UI_iconHelpLoading_killer.png');
-const killerDest = path.join(unpackDir, 'killer.png');
+const survivorSrc = path.join(unpackDir, 'HelpLoading/T_UI_iconHelpLoading_survivor.webp');
+const survivorDest = path.join(unpackDir, 'survivor.webp');
+const killerSrc = path.join(unpackDir, 'HelpLoading/T_UI_iconHelpLoading_killer.webp');
+const killerDest = path.join(unpackDir, 'killer.webp');
 
 await fs.rename(survivorSrc, survivorDest);
 await fs.rename(killerSrc, killerDest);
@@ -105,12 +137,12 @@ try {
       if (stat.isDirectory()) {
         // Recursively process subdirectories
         await renameFilesRecursively(filePath);
-      } else if (stat.isFile() && file.endsWith('.png')) {
-        // Process PNG files
-        const match = file.match(/^(iconPerks_)(.)(.*\.png)$/);
+      } else if (stat.isFile() && file.toLowerCase().endsWith('.webp')) {
+        // Process WebP files
+        const match = file.match(/^(iconPerks_)(.)(.*)\.webp$/i);
         if (match) {
           const [, prefix, firstLetter, suffix] = match;
-          const newName = prefix + firstLetter.toUpperCase() + suffix;
+          const newName = prefix + firstLetter.toUpperCase() + suffix + '.webp';
           if (file !== newName) {
             await fs.rename(filePath, path.join(dir, newName));
           }

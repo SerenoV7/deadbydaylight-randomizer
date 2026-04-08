@@ -40,13 +40,13 @@ const ItemIcon: React.FC<ItemIconProps> = ({ name, className }) => {
           setItemName(data[itemKey].name)
           setDescription(data[itemKey].description)
         } else {
-          setImagePath(`/icons/Items/${name.replace(/\s+/g, '')}.png`)
+          setImagePath(`/icons/Items/${name.replace(/\s+/g, '')}.webp`)
           setItemName(name)
         }
       })
       .catch((error) => {
         console.error('Error fetching item data:', error)
-        setImagePath(`/icons/Items/${name.replace(/\s+/g, '')}.png`)
+        setImagePath(`/icons/Items/${name.replace(/\s+/g, '')}.webp`)
         setItemName(name)
       })
   }, [name])
