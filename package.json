@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "bun scripts/setup_data.ts && bun scripts/setup_icons.ts && tsc -b && vite build",
+    "setup": "bun scripts/setup_data.ts && bun scripts/setup_icons.ts",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -3,10 +3,9 @@ type Role = 'killer' | 'survivor'
 interface HomeScreenProps {
     onSelect: (role: Role) => void
     randomizerVersion: string
-    gameVersion: string
 }
 
-export default function HomeScreen({ onSelect, randomizerVersion, gameVersion }: HomeScreenProps) {
+export default function HomeScreen({ onSelect, randomizerVersion }: HomeScreenProps) {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center w-full bg-gray-950">
@@ -17,7 +16,6 @@ export default function HomeScreen({ onSelect, randomizerVersion, gameVersion }:
                 Loadout Randomizer
             </h3>
             <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase">
-                {/* Game Version: <b className="roboto-condensed-bold text-gray-400">{gameVersion}</b> */}
                 Game Version: <b className="roboto-condensed-bold text-gray-400">9.5.2</b>
             </p>
             <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase mb-4">

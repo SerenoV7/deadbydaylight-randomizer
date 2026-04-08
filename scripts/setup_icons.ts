@@ -53,24 +53,32 @@ async function removeDir(dirPath: string): Promise<void> {
 async function convertToWebP(dirPath: string): Promise<void> {
   async function convertFilesRecursively(dir: string): Promise<void> {
     const files = await fs.readdir(dir);
+    const promises: Promise<void>[] = [];
+    
     for (const file of files) {
       const filePath = path.join(dir, file);
       const stat = await fs.stat(filePath);
       
       if (stat.isDirectory()) {
-        await convertFilesRecursively(filePath);
+        promises.push(convertFilesRecursively(filePath));
       } else if (stat.isFile() && file.toLowerCase().endsWith('.png')) {
-        try {
-          const webpPath = filePath.replace(/\.png$/i, '.webp');
-          await sharp(filePath)
-            .webp({ quality: 85 })
-            .toFile(webpPath);
-          await fs.unlink(filePath);
-        } catch (error) {
-          console.warn(`Failed to convert ${file} to WebP:`, error);
-        }
+        promises.push(
+          (async () => {
+            try {
+              const webpPath = filePath.replace(/\.png$/i, '.webp');
+              await sharp(filePath)
+                .webp({ quality: 85 })
+                .toFile(webpPath);
+              await fs.unlink(filePath);
+            } catch (error) {
+              console.warn(`Failed to convert ${file} to WebP:`, error);
+            }
+          })()
+        );
       }
     }
+    
+    await Promise.all(promises);
   }
   
   await convertFilesRecursively(dirPath);
@@ -109,9 +117,7 @@ const dirsToRemove = [
   'StatusEffects',
 ];
 
-for (const dir of dirsToRemove) {
-  await removeDir(path.join(unpackDir, dir));
-}
+await Promise.all(dirsToRemove.map(dir => removeDir(path.join(unpackDir, dir))));
 
 // Move specific files from HelpLoading
 const survivorSrc = path.join(unpackDir, 'HelpLoading/T_UI_iconHelpLoading_survivor.webp');
@@ -130,13 +136,15 @@ const perksDir = path.join(unpackDir, 'Perks');
 try {
   async function renameFilesRecursively(dir: string): Promise<void> {
     const files = await fs.readdir(dir);
+    const renamePromises: Promise<void>[] = [];
+    
     for (const file of files) {
       const filePath = path.join(dir, file);
       const stat = await fs.stat(filePath);
       
       if (stat.isDirectory()) {
         // Recursively process subdirectories
-        await renameFilesRecursively(filePath);
+        renamePromises.push(renameFilesRecursively(filePath));
       } else if (stat.isFile() && file.toLowerCase().endsWith('.webp')) {
         // Process WebP files
         const match = file.match(/^(iconPerks_)(.)(.*)\.webp$/i);
@@ -144,11 +152,13 @@ try {
           const [, prefix, firstLetter, suffix] = match;
           const newName = prefix + firstLetter.toUpperCase() + suffix + '.webp';
           if (file !== newName) {
-            await fs.rename(filePath, path.join(dir, newName));
+            renamePromises.push(fs.rename(filePath, path.join(dir, newName)));
           }
         }
       }
     }
+    
+    await Promise.all(renamePromises);
   }
   
   await renameFilesRecursively(perksDir);
