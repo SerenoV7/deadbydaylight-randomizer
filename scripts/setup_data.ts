@@ -133,7 +133,8 @@ function transformPerk(key: string, perk: Perk): TransformedPerk {
   const { categories, character, teachable, tunables, ...rest } = perk;
   const safeTunables = Array.isArray(tunables) ? tunables : [];
   const description = transformDescription(perk.description, safeTunables);
-  const imagePath = perk.image.replace('/Game/UI/UMGAssets/Icons/', '/icons/');
+  let imagePath = perk.image.replace('/Game/UI/UMGAssets/Icons/', '/icons/');
+  imagePath = imagePath.replace(/\.png$/i, '');
   const image = imagePath.replace(/iconPerks_([a-z])/g, (match, p1) => `iconPerks_${p1.toUpperCase()}`) + '.webp';
   return { name: rest.name, description, role: rest.role, image };
 }
@@ -148,7 +149,8 @@ async function fetchAddons(url: string): Promise<Record<string, Addon>> {
 function transformAddon(key: string, addon: Addon): TransformedAddon {
   const { bloodweb, modifiers, ...rest } = addon;
   const description = transformDescription(addon.description, []);
-  const imagePath = addon.image.replace('/Game/UI/UMGAssets/Icons/', '/icons/');
+  let imagePath = addon.image.replace('/Game/UI/UMGAssets/Icons/', '/icons/');
+  imagePath = imagePath.replace(/\.png$/i, '');
   const image = imagePath.replace(/\/icons\/([a-z])/, (match, p1) => `/icons/${p1.toUpperCase()}`) + '.webp';
   return { ...rest, name: rest.name, description, image };
 }
@@ -163,7 +165,8 @@ async function fetchItems(url: string): Promise<Record<string, Item>> {
 function transformItem(key: string, item: Item): TransformedItem {
   const { type, modifiers, bloodweb, event, ...rest } = item;
   const description = transformDescription(item.description, []);
-  const imagePath = item.image.replace('/Game/UI/UMGAssets/Icons/', '/icons/');
+  let imagePath = item.image.replace('/Game/UI/UMGAssets/Icons/', '/icons/');
+  imagePath = imagePath.replace(/\.png$/i, '');
   const image = imagePath.replace(/\/icons\/([a-z])/, (match, p1) => `/icons/${p1.toUpperCase()}`) + '.webp';
   return { item_type: rest.item_type, name: rest.name, description, rarity: rest.rarity, image };
 }
@@ -177,7 +180,8 @@ async function fetchCharacters(url: string): Promise<Record<string, Character>> 
 
   function transformCharacter(character: Character): TransformedCharacter {
     if (character.role === 'killer') {
-      const image = character.image.replace('UI/Icons', '/icons');
+      let image = character.image.replace('UI/Icons', '/icons');
+      image = image.replace(/\.png$/i, '.webp');
       return { image, item: character.item };
     } else {
       return { image: '', item: '' };
@@ -196,7 +200,7 @@ async function main() {
   const packageJsonContent = await readFile('./package.json', 'utf-8');
   const packageJson = JSON.parse(packageJsonContent);
   const versionData = { version: packageJson.version };
-  await writeFile(`${publicDir}version.json`, JSON.stringify(versionData));
+  await writeFile(`${dataDir}version.json`, JSON.stringify(versionData));
   console.log(`Version ${packageJson.version} written to version.json`);
 
   const perks = await fetchPerks(url+'perks');

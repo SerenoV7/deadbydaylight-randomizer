@@ -1,29 +1,11 @@
-import { useState, useEffect } from 'react'
-
 type Role = 'killer' | 'survivor'
 
 interface HomeScreenProps {
     onSelect: (role: Role) => void
+    randomizerVersion: string
 }
 
-interface VersionData {
-    version: string
-}
-
-export default function HomeScreen({ onSelect }: HomeScreenProps) {
-    const [randomizerVersion, setRandomizerVersion] = useState<string>('Loading...')
-
-    useEffect(() => {
-        fetch('/version.json')
-            .then((response) => response.json())
-            .then((data: VersionData) => {
-                setRandomizerVersion(data.version)
-            })
-            .catch((error) => {
-                console.error('Error fetching version:', error)
-                setRandomizerVersion('Unknown')
-            })
-    }, [])
+export default function HomeScreen({ onSelect, randomizerVersion }: HomeScreenProps) {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center w-full bg-gray-950">
@@ -67,9 +49,9 @@ export default function HomeScreen({ onSelect }: HomeScreenProps) {
 
                 {/* Divider */}
                 <div className="flex flex-col items-center justify-center gap-2 select-none">
-                    <div className="w-px h-24 bg-gradient-to-b from-transparent via-gray-700 to-transparent" />
+                    <div className="w-px h-24 bg-linear-to-b from-transparent via-gray-700 to-transparent" />
                     <span className="roboto text-gray-600 text-xs uppercase tracking-widest">vs</span>
-                    <div className="w-px h-24 bg-gradient-to-b from-transparent via-gray-700 to-transparent" />
+                    <div className="w-px h-24 bg-linear-to-b from-transparent via-gray-700 to-transparent" />
                 </div>
 
                 {/* Survivor card */}
