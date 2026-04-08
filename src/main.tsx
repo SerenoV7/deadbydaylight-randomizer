@@ -17,6 +17,7 @@ const CURRENT_VERSION_KEY = 'app_version'
 export default function App() {
     const [view, setView] = useState<View>('home')
     const [randomizerVersion, setRandomizerVersion] = useState<string>('Loading...')
+    const [gameVersion, setGameVersion] = useState<string>('Loading...')
     const [showUpdatePopup, setShowUpdatePopup] = useState<boolean>(false)
     const [newVersion, setNewVersion] = useState<string>('')
 
@@ -37,6 +38,22 @@ export default function App() {
         }
     }
 
+    const fetchGameVersion = async () => {
+        try {
+            const response = await fetch('https://dbd.tricky.lol/api/patchnotes')
+            const data = await response.json()
+            // Get the last id from the response
+            if (Array.isArray(data) && data.length > 0) {
+                const lastPatchNote = data[data.length - 1]
+                return lastPatchNote.id
+            }
+            return 'Unknown'
+        } catch (error) {
+            console.error('Error fetching game version:', error)
+            return 'Unknown'
+        }
+    }
+
     useEffect(() => {
         // Initial version fetch and storage
         const initializeVersion = async () => {
@@ -47,6 +64,9 @@ export default function App() {
             } else {
                 setRandomizerVersion('Unknown')
             }
+
+            const gdbVersion = await fetchGameVersion()
+            setGameVersion(gdbVersion)
         }
 
         initializeVersion()
@@ -69,20 +89,20 @@ export default function App() {
         <>
             {/* Update Popup */}
             {showUpdatePopup && (
-                <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-                    <div className="bg-gray-900 border-2 border-yellow-600 p-8 rounded-lg text-center max-w-md">
-                        <h2 className="roboto-condensed-bold text-2xl text-yellow-500 mb-4 uppercase tracking-widest">
+                <div className="fixed top-4 right-4 z-50">
+                    <div className="bg-gray-800 border-2 border-gray-600 p-6 rounded-lg text-center max-w-sm shadow-lg">
+                        <h2 className="roboto-condensed-bold text-xl text-gray-300 mb-3 uppercase tracking-widest">
                             New Version Available
                         </h2>
-                        <p className="roboto text-gray-300 mb-2">
+                        <p className="roboto text-gray-400 mb-2 text-sm">
                             A new version of the Randomizer is available.
                         </p>
-                        <p className="roboto text-gray-400 text-sm mb-6">
-                            Current: <span className="text-yellow-500">{randomizerVersion}</span> → New: <span className="text-yellow-500">{newVersion}</span>
+                        <p className="roboto text-gray-500 text-xs mb-4">
+                            Current: <span className="text-gray-300">{randomizerVersion}</span> → New: <span className="text-gray-300">{newVersion}</span>
                         </p>
                         <button
                             onClick={clearStorageAndReload}
-                            className="roboto-condensed-bold px-8 py-3 bg-yellow-600 hover:bg-yellow-500 text-black uppercase tracking-widest transition-colors duration-200"
+                            className="roboto-condensed-bold px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 uppercase tracking-widest transition-colors duration-200 text-sm"
                         >
                             Update Now
                         </button>
@@ -91,7 +111,7 @@ export default function App() {
             )}
 
             {view === 'home' && (
-                <HomeScreen onSelect={(role) => setView(role)} randomizerVersion={randomizerVersion} />
+                <HomeScreen onSelect={(role) => setView(role)} randomizerVersion={randomizerVersion} gameVersion={gameVersion} />
             )}
             {view === 'killer' && (
                 <KillerPanel onBack={() => setView('home')} />

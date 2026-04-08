@@ -58,8 +58,8 @@ export default function SurvivorPanel({ onBack }: SurvivorPanelProps) {
                 selectedItemType = randomType
 
                 const itemsOfType = Object.entries(itemsData)
-                    .filter(([, item]: [string, any]) =>
-                        item.item_type === randomType && item.rarity !== 'none'
+                    .filter(([, item]: [string, unknown]) =>
+                        (item as { item_type: string }).item_type === randomType && (item as { rarity: string }).rarity !== 'none'
                     )
                     .map(([name]) => name)
 
@@ -71,7 +71,7 @@ export default function SurvivorPanel({ onBack }: SurvivorPanelProps) {
             const randomizedAddons: string[] = []
             if (checkedItems.addons && selectedItemType) {
                 const typeAddons = Object.entries(addonsData)
-                    .filter(([, addon]: [string, any]) => addon.item_type === selectedItemType)
+                    .filter(([, addon]: [string, unknown]) => (addon as { item_type: string }).item_type === selectedItemType)
                     .map(([name]) => name)
 
                 if (typeAddons.length >= 2) {
@@ -87,7 +87,7 @@ export default function SurvivorPanel({ onBack }: SurvivorPanelProps) {
             const randomizedPerks: string[] = []
             if (checkedItems.perks) {
                 const survivorPerks = Object.entries(perksData)
-                    .filter(([, perk]: [string, any]) => perk.role === 'survivor')
+                    .filter(([, perk]: [string, unknown]) => (perk as { role: string }).role === 'survivor')
                     .map(([name]) => name)
 
                 for (let i = 0; i < 4 && survivorPerks.length > 0; i++) {
