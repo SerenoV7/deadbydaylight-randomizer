@@ -179,7 +179,7 @@ export default function SurvivorPanel({ onBack }: SurvivorPanelProps) {
                     <div className="relative border border-blue-900 bg-gray-900 p-10 flex flex-col items-center w-72 overflow-hidden">
                         <div className="absolute inset-0 opacity-5 bg-blue-600 blur-2xl pointer-events-none" />
 
-                        <img src="/icons/survivor.png" alt="Survivor Icon" className="w-16 h-16 object-contain opacity-80 mb-6" />
+                        <img src="/icons/survivor.webp" alt="Survivor Icon" className="w-16 h-16 object-contain opacity-80 mb-6" />
 
                         <h1 className="roboto-condensed-bold text-2xl tracking-widest uppercase text-white mb-6 text-center">
                             What to randomize?

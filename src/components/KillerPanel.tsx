@@ -178,7 +178,7 @@ export default function KillerPanel({ onBack }: KillerPanelProps) {
                     <div className="relative border border-red-900 bg-gray-900 p-10 flex flex-col items-center w-72 overflow-hidden">
                         <div className="absolute inset-0 opacity-5 bg-red-600 blur-2xl pointer-events-none" />
 
-                        <img src="/icons/killer.png" alt="Killer Icon" className="w-16 h-16 object-contain opacity-80 mb-6" />
+                        <img src="/icons/killer.webp" alt="Killer Icon" className="w-16 h-16 object-contain opacity-80 mb-6" />
 
                         <h1 className="roboto-condensed-bold text-2xl tracking-widest uppercase text-white mb-6 text-center">
                             What to randomize?

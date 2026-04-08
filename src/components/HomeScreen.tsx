@@ -17,7 +17,8 @@ export default function HomeScreen({ onSelect, randomizerVersion, gameVersion }:
                 Loadout Randomizer
             </h3>
             <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase">
-                Game Version: <b className="roboto-condensed-bold text-gray-400">{gameVersion}</b>
+                {/* Game Version: <b className="roboto-condensed-bold text-gray-400">{gameVersion}</b> */}
+                Game Version: <b className="roboto-condensed-bold text-gray-400">9.5.2</b>
             </p>
             <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase mb-4">
                 Randomizer Version: <b className="roboto-condensed-bold text-gray-400">{randomizerVersion}</b>
