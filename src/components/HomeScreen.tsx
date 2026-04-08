@@ -9,17 +9,17 @@ export default function HomeScreen({ onSelect, randomizerVersion }: HomeScreenPr
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center w-full bg-gray-950">
-            <h1 className="roboto-condensed-bold text-4xl tracking-widest uppercase text-white mb-2">
+            <h1 className="roboto-bold text-4xl tracking-widest uppercase text-white mb-2">
                 Dead by Daylight
             </h1>
-            <p className="roboto text-gray-500 text-sm tracking-widest uppercase">
+            <h3 className="roboto-condensed-bold text-gray-200 text-xl tracking-widest uppercase">
                 Loadout Randomizer
+            </h3>
+            <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase">
+                Game Version: <b className="roboto-condensed-bold text-gray-400">9.5.0</b>
             </p>
-            <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase mb-2">
-                Game Version: <b className="roboto-condensed-bold">9.5.0</b>
-            </p>
-            <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase mb-16">
-                Randomizer Version: <b className="roboto-condensed-bold">{randomizerVersion}</b>
+            <p className="roboto-condensed text-gray-500 text-sm tracking-widest uppercase mb-4">
+                Randomizer Version: <b className="roboto-condensed-bold text-gray-400">{randomizerVersion}</b>
             </p>
 
             <div className="flex gap-6">
