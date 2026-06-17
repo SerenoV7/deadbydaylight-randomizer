@@ -11,7 +11,7 @@ import path from 'path';
 import AdmZip from 'adm-zip';
 import sharp from 'sharp';
 
-const zipUrl = 'https://file.serenodev.com/misc/dbdrando/default-icons.zip';
+const zipUrl = 'https://cdn.serenov7.com/misc/dbdrando/default-icons.zip';
 const zipPath = './public/icons/default-icons.zip';
 const unpackDir = './public/icons/';
 
